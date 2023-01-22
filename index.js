@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Endpoints
+// Routes
 app.get('/', async (req, res) => {
     try {
       res.send("Connected Successfully")
@@ -64,6 +64,17 @@ app.get('/users/professions/:profession', async (req, res) => {
         const { profession } = req.params;
         const userData = await dbPool.query("SELECT * FROM UserInformationTable WHERE profession = ?",
          [profession]);
+        res.json(userData[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.get('/users/usersPerCountry/:country', async (req, res) => {
+    try {
+        const { country } = req.params;
+        const userData = await dbPool.query("SELECT COUNT(*) FROM UserInformationTable WHERE country = ? ",
+         [country]);
         res.json(userData[0]);
     } catch (err) {
         console.error(err.message);
