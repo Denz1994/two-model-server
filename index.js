@@ -8,8 +8,8 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
     try {
-      const todos = await dbPool.query("SELECT * FROM todo");
-      res.json(todos[0]);
+      const userData = await dbPool.query("SELECT * FROM UserInformationTable");
+      res.json(userData);
     } catch (err) {
       console.error(err.message);
     }
