@@ -5,7 +5,7 @@ This is 1 part of a 3 part microservice to report user data. This project acts a
 The sister repo for the client is found here: https://github.com/Denz1994/two-model-client/tree/master
 
 ## Usage
-1.Clone this repo locally
+1. Clone this repo locally
 2. Clone https://github.com/Denz1994/two-model-client locally
 3. run npm start for BOTH the client and server
 
