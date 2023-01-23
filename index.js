@@ -18,10 +18,23 @@ app.get('/', async (req, res) => {
 app.get('/users', async (req, res) => {
 try {
     const userData = await dbPool.query("SELECT * FROM UserInformationTable");
-    res.json(userData);
+    res.json(userData[0]);
 } catch (err) {
     console.error(err.message);
 }
+});
+
+app.get('/users/:firstName/:lastName/:start/:end/:profession', async (req, res) => {
+    try {
+        const { firstName, lastName,start, end, profession } = req.params;
+        const WHERE = "WHERE firstName = ? AND lastName = ? AND ? <= dateCreated AND dateCreated <= ? AND profession = ?"
+        const query = "SELECT * FROM UserInformationTable " + WHERE
+        const userData = await dbPool.query(query,
+            [firstName, lastName,start, end, profession]);
+        res.json(userData[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
 });
 
 app.get('/users/id/:id', async (req, res) => {
@@ -49,8 +62,8 @@ app.get('/users/name/:firstName/:lastName', async (req, res) => {
 app.get('/users/date/:start/:end', async (req, res) => {
     try {
         const { start, end } = req.params;
-        const startDate = new Date(start);
-        const endDate = new Date(end);
+        const startDate = new Date(start).toISOString().split('T')[0];
+        const endDate = new Date(end).toISOString().split('T')[0];
         const userData = await dbPool.query("SELECT * FROM UserInformationTable WHERE ? <= dateCreated AND dateCreated <= ?",
          [startDate, endDate]);
         res.json(userData[0]);
@@ -59,7 +72,7 @@ app.get('/users/date/:start/:end', async (req, res) => {
     }
 });
 
-app.get('/users/professions/:profession', async (req, res) => {
+app.get('/users/profession/:profession', async (req, res) => {
     try {
         const { profession } = req.params;
         const userData = await dbPool.query("SELECT * FROM UserInformationTable WHERE profession = ?",
